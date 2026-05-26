@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>Last Fries – Last One, Best One</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --red: #9B0000;
+    --red-dark: #6B0000;
+    --red-light: #C0392B;
+    --gold: #F4A800;
+    --gold-light: #FFD166;
+    --cream: #FFF8ED;
+    --cream-dark: #F5EDD8;
+    --text-dark: #1A0A00;
+    --text-mid: #4A2000;
+    --white: #FFFFFF;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: "Nunito", sans-serif; background: var(--cream); color: var(--text-dark); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 999;
+    background: var(--red-dark);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 1rem; height: 64px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo img { height: 52px; object-fit: contain; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--cream); text-decoration: none; font-weight: 700; font-size: 0.88rem; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-order-btn { background: var(--gold); color: var(--red-dark); font-weight: 900; font-size: 0.85rem; padding: 8px 20px; border-radius: 50px; text-decoration: none; text-transform: uppercase; letter-spacing: 0.06em; transition: background 0.2s, transform 0.15s; border: none; cursor: pointer; }
+  .nav-order-btn:hover { background: var(--gold-light); transform: scale(1.04); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 0; z-index: 1000; }
+  .hamburger span { width: 26px; height: 2.5px; background: var(--cream); border-radius: 2px; display: block; transition: 0.3s; }
+  .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(10px, 10px); }
+  .hamburger.active span:nth-child(2) { opacity: 0; }
+  .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
+  .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; z-index: 998; background: var(--red-dark); flex-direction: column; padding-bottom: 1rem; max-height: calc(100vh - 64px); overflow-y: auto; }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { color: var(--cream); text-decoration: none; font-weight: 700; font-size: 1rem; padding: 14px 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); text-transform: uppercase; letter-spacing: 0.06em; display: block; }
+  .mobile-menu a:hover { background: rgba(255,255,255,0.08); color: var(--gold); }
+
+  /* HERO */
+ /* #hero { min-height: 100vh; background: var(--red); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 100px 1rem 60px; position: relative; overflow: hidden; }
+  #hero::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(0,0,0,0.04) 40px, rgba(0,0,0,0.04) 80px); }
+*/  .hero-logo { width: clamp(160px, 30vw, 260px); margin-bottom: 1.5rem; position: relative; filter: drop-shadow(0 8px 32px rgba(0,0,0,0.4)); animation: fadeDown 0.7s ease both; }
+  .hero-badge { background: var(--gold); color: var(--red-dark); font-weight: 900; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 20px; border-radius: 50px; margin-bottom: 1.2rem; display: inline-block; position: relative; animation: fadeDown 0.7s 0.1s ease both; }
+  .hero-title { font-family: "Bebas Neue", sans-serif; font-size: clamp(4rem, 13vw, 10rem); color: var(--white); line-height: 0.9; letter-spacing: 0.02em; position: relative; animation: fadeUp 0.7s 0.15s ease both; }
+  .hero-title span { color: var(--gold); }
+  .hero-tagline { font-family: "Bebas Neue", sans-serif; font-size: clamp(1.2rem, 3.5vw, 2.2rem); color: var(--cream); letter-spacing: 0.18em; margin-top: 0.5rem; position: relative; animation: fadeUp 0.7s 0.25s ease both; }
+  .hero-cta { display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; justify-content: center; position: relative; animation: fadeUp 0.7s 0.38s ease both; }
+  .btn-primary { background: var(--gold); color: var(--red-dark); font-weight: 900; font-size: 1rem; padding: 14px 36px; border-radius: 50px; text-decoration: none; letter-spacing: 0.06em; text-transform: uppercase; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 16px rgba(244,168,0,0.4); border: none; cursor: pointer; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(244,168,0,0.5); }
+  .btn-secondary { background: transparent; border: 2px solid rgba(255,255,255,0.5); color: var(--white); font-weight: 800; font-size: 1rem; padding: 14px 36px; border-radius: 50px; text-decoration: none; letter-spacing: 0.06em; text-transform: uppercase; transition: border-color 0.2s, background 0.2s; cursor: pointer; }
+  .btn-secondary:hover { border-color: var(--white); background: rgba(255,255,255,0.1); }
+  .hero-scroll { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.5); font-size: 0.78rem; letter-spacing: 0.1em; display: flex; flex-direction: column; align-items: center; gap: 4px; animation: bounce 2s infinite; }
+  .hero-scroll::after { content: "↓"; font-size: 1.1rem; }
+
+
+
+    #hero {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: #fff;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    /* Video */
+    .hero-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -2;
+    }
+
+    /* Dark overlay */
+    .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.75);
+        z-index: -1;
+    }
+
+    /* Content */
+    .hero-content {
+        z-index: 2;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: #fff;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+
+
+
+
+
+
+
+
+
+  /* ABOUT */
+  #about { background: var(--cream-dark); padding: 80px 1rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-title { font-family: "Bebas Neue", sans-serif; font-size: clamp(2.5rem, 7vw, 5rem); letter-spacing: 0.04em; line-height: 1; }
+  .gold-line { width: 60px; height: 4px; background: var(--gold); border-radius: 2px; margin: 12px 0 32px; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .about-text .section-title { color: var(--red); }
+  .about-text p { font-size: 1.05rem; line-height: 1.8; color: var(--text-mid); margin-bottom: 1rem; }
+  .about-text p strong { color: var(--red); }
+  .about-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-top: 2rem; }
+  .stat-box { background: var(--white); border-radius: 16px; padding: 1.2rem; text-align: center; box-shadow: 0 2px 12px rgba(155,0,0,0.08); }
+  .stat-box .num { font-family: "Bebas Neue", sans-serif; font-size: 2.6rem; color: var(--red); line-height: 1; }
+  .stat-box .label { font-size: 0.78rem; font-weight: 700; color: var(--text-mid); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+  .about-visual { background: var(--red); border-radius: 24px; padding: 3rem 2rem; text-align: center; position: relative; overflow: hidden; }
+  .about-visual::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(255,255,255,0.03) 30px, rgba(255,255,255,0.03) 60px); }
+  .about-visual img { width: 160px; margin-bottom: 1rem; position: relative; filter: drop-shadow(0 4px 16px rgba(0,0,0,0.3)); }
+  .about-visual .tagline-big { font-family: "Bebas Neue", sans-serif; font-size: 2.6rem; color: var(--gold); letter-spacing: 0.08em; position: relative; }
+  .about-visual .tagline-white { font-family: "Bebas Neue", sans-serif; font-size: 2.6rem; color: #fff; letter-spacing: 0.08em; position: relative; }
+  .about-visual .tagline-sub { font-weight: 700; color: rgba(255,255,255,0.65); font-size: 0.88rem; letter-spacing: 0.1em; text-transform: uppercase; position: relative; margin-top: 10px; }
+
+  /* MENU */
+  #menu { background: var(--cream); padding: 80px 1rem; }
+  #menu .section-title { color: var(--red); text-align: center; }
+  #menu .gold-line { margin: 12px auto 16px; }
+  .menu-subtitle { text-align: center; color: var(--text-mid); font-size: 1rem; font-weight: 600; margin-bottom: 2.5rem; letter-spacing: 0.04em; }
+  .menu-tabs { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem; }
+  .menu-tab { background: transparent; border: 2px solid var(--red); color: var(--red); font-family: "Nunito", sans-serif; font-weight: 800; font-size: 0.82rem; padding: 8px 18px; border-radius: 50px; cursor: pointer; letter-spacing: 0.06em; text-transform: uppercase; transition: background 0.2s, color 0.2s; }
+  .menu-tab.active, .menu-tab:hover { background: var(--red); color: var(--white); }
+  .menu-section { display: none; }
+    .Drink-menu-section {
+        display: block;
+    }
+  .menu-section.active { display: block; animation: fadeIn 0.35s ease; }
+  .category-title { font-family: "Bebas Neue", sans-serif; font-size: 2rem; color: var(--red); margin-bottom: 0.3rem; letter-spacing: 0.06em; }
+  .category-ar { font-size: 1rem; color: var(--text-mid); font-weight: 700; margin-bottom: 1.5rem; direction: rtl; }
+  .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 3rem; }
+  .menu-card { 
+    background: var(--white); border-radius: 16px; padding: 1.5rem; 
+    display: flex; justify-content: space-between; align-items: flex-start;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: box-shadow 0.2s, transform 0.2s;
+    cursor: pointer; border: 2px solid transparent;
+  }
+  .menu-card:hover { box-shadow: 0 4px 20px rgba(155,0,0,0.15); transform: translateY(-2px); }
+  .menu-card.selected { border-color: var(--gold); background: rgba(244, 168, 0, 0.05); }
+  .item-info { flex: 1; }
+  .item-name { font-weight: 800; font-size: 1.1rem; color: var(--text-dark); margin-bottom: 0.5rem; }
+  .item-desc { font-size: 0.9rem; color: var(--text-mid); margin-bottom: 0.8rem; }
+  .price { font-family: "Bebas Neue", sans-serif; font-size: 1.6rem; color: var(--red); font-weight: 900; line-height: 1; }
+  .price-note { font-size: 0.7rem; color: var(--text-mid); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .drink-category-header { font-family: "Bebas Neue", sans-serif; font-size: 1.2rem; color: var(--red); font-weight: 900; margin-top: 2rem; margin-bottom: 1rem; padding-top: 1rem; border-top: 2px solid var(--gold); letter-spacing: 0.06em; }
+  .order-summary { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 3px solid var(--gold); padding: 1rem; z-index: 100; box-shadow: 0 -4px 16px rgba(0,0,0,0.1); }
+  .order-summary.hidden { display: none; }
+  .summary-content { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .summary-items { flex: 1; min-width: 200px; }
+  .summary-items p { margin: 0; color: var(--text-mid); font-size: 0.9rem; }
+  .summary-items .count { font-weight: 900; color: var(--red); }
+  .summary-total { display: flex; align-items: baseline; gap: 0.5rem; font-size: 1.2rem; }
+  .summary-total .amount { font-family: "Bebas Neue", sans-serif; font-size: 2rem; color: var(--red); font-weight: 900; }
+  .summary-total .currency { color: var(--text-mid); font-weight: 700; }
+  .btn-order-now { background: var(--gold); color: var(--red-dark); font-weight: 900; font-size: 1rem; padding: 12px 28px; border-radius: 50px; border: none; cursor: pointer; transition: background 0.2s, transform 0.15s; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+  .btn-order-now:hover { background: var(--gold-light); transform: scale(1.04); }
+  .btn-order-now:disabled { background: #ccc; cursor: not-allowed; transform: scale(1); }
+
+  /* CONTACT */
+  #contact { background: var(--cream-dark); padding: 80px 1rem; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; margin-top: 3rem; }
+  .contact-info p { font-size: 1.05rem; line-height: 1.8; color: var(--text-mid); margin-bottom: 2rem; }
+  .social-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .social-btn { 
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--white); border: 2px solid var(--red); color: var(--red);
+    padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: 700;
+    font-size: 0.85rem; transition: background 0.2s, color 0.2s;
+  }
+  .social-btn:hover { background: var(--red); color: var(--white); }
+  .social-btn svg { width: 20px; height: 20px; fill: currentColor; }
+  .social-btn.wa-btn { border-color: #25d366; color: #25d366; }
+  .social-btn.wa-btn:hover { background: #25d366; color: var(--white); }
+  .contact-card { background: var(--white); border-radius: 16px; padding: 2rem; box-shadow: 0 2px 12px rgba(155,0,0,0.08); }
+  .contact-card h3 { font-family: "Bebas Neue", sans-serif; font-size: 1.8rem; color: var(--red); margin-bottom: 1.5rem; letter-spacing: 0.06em; }
+  .contact-row { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+  .contact-icon { font-size: 1.8rem; min-width: 40px; }
+  .contact-row strong { color: var(--red); display: block; margin-bottom: 0.3rem; }
+  .contact-row a { color: var(--gold); text-decoration: none; font-weight: 700; }
+  .contact-row a:hover { text-decoration: underline; }
+
+  /* FOOTER */
+  footer { background: var(--red-dark); color: var(--cream); text-align: center; padding: 2rem 1rem; font-size: 0.9rem; }
+  footer span { color: var(--gold); font-weight: 700; }
+  footer a { color: var(--gold); text-decoration: none; font-weight: 700; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ANIMATIONS */
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 0 0.75rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .about-stats { grid-template-columns: 1fr 1fr; }
+    .about-visual { padding: 2rem 1rem; }
+    .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .menu-grid { grid-template-columns: 1fr; }
+    .order-summary { padding: 0.75rem; }
+    .summary-content { flex-direction: column; align-items: stretch; }
+    .summary-items { order: 2; }
+    .summary-total { order: 3; justify-content: center; }
+    .btn-order-now { order: 1; width: 100%; }
+    .summary-content > div:nth-child(1) { order: 2; }
+    .summary-content > div:nth-child(2) { order: 3; }
+    .summary-content > button { order: 1; width: 100%; }
+  }
+  @media (max-width: 480px) {
+    body { font-size: 14px; }
+    .container { padding: 0 1rem; }
+    .hero-title { font-size: clamp(2.5rem, 10vw, 3.5rem); }
+    .section-title { font-size: clamp(1.8rem, 5vw, 3rem); }
+    .menu-grid { grid-template-columns: 1fr; }
+    .stat-box { padding: 1rem; }
+    .contact-card { padding: 1.5rem; }
+    .contact-card h3 { font-size: 1.4rem; }
+    nav { height: 56px; }
+    #hero { padding: 90px 1rem 40px; }
+  }
+</style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <a href="#" class="nav-logo">
+            <!--<svg width="50" height="50" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <text x="50" y="65" font-family="Bebas Neue, sans-serif" font-size="50" font-weight="bold" text-anchor="middle" fill="none" stroke="white" stroke-width="2">F</text>
+            </svg>
+            Last Fries-->
+            <img src="logo.png" />
+        </a>
+        <ul class="nav-links">
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#menu" onclick="closeMenu()">Menu</a>
+        <a href="#about" onclick="closeMenu()">About</a>
+        <a href="#contact" onclick="closeMenu()">Contact</a>
+    </div>
+
+    <!-- HERO -->
+    <!--<section id="hero">
+      <svg class="hero-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <text x="100" y="140" font-family="Bebas Neue, sans-serif" font-size="100" font-weight="bold" text-anchor="middle" fill="none" stroke="white" stroke-width="3">F</text>
+      </svg>
+      <div class="hero-badge">🍟 Crispy Perfect Every Time</div>
+      <h1 class="hero-title">LAST <span>FRIES</span></h1>
+      <h2 class="hero-tagline">LAST ONE, BEST ONE</h2>
+      <div class="hero-cta">
+        <a href="#menu" class="btn-primary">Order Now</a>
+        <a href="#contact" class="btn-secondary">Find Us</a>
+      </div>
+      <div class="hero-scroll">SCROLL</div>
+    </section>-->
+
+
+
+    <section id="hero">
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="./video.mp4.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <!-- Overlay -->
+        <div class="hero-overlay"></div>
+
+        <!-- Content -->
+        <div class="hero-content">
+            <!--<svg class="hero-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <text x="100" y="140" font-family="Bebas Neue, sans-serif" font-size="100" font-weight="bold" text-anchor="middle" fill="none" stroke="white" stroke-width="3">F</text>
+            </svg>-->
+            <img src="logo.png"  style="width:20%"/>
+            <div class="hero-badge">🍟 Crispy Perfect Every Time</div>
+            <h1 class="hero-title">LAST <span>FRIES</span></h1>
+            <h2 class="hero-tagline">LAST ONE, BEST ONE</h2>
+            <div class="hero-cta">
+                <a href="#menu" class="btn-primary">Order Now</a>
+                <a href="#contact" class="btn-secondary">Find Us</a>
+            </div>
+
+        <div class="hero-scroll">Scroll</div>
+        </div>
+    </section>
+
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text">
+                    <h2 class="section-title">Why Last Fries?</h2>
+                    <div class="gold-line"></div>
+                    <p>At <strong>Last Fries</strong>, we believe that every order deserves perfection. We use only the finest potatoes, fresh daily, and cook them in small batches to ensure <strong>crispy excellence</strong>.</p>
+                    <p>Our secret blend of seasonings and dedication to quality makes every bite memorable. Whether it's our <strong>classic fries</strong>, <strong>loaded specialties</strong>, or <strong>premium drinks</strong>, we never compromise on taste.</p>
+                    <p><strong>Last One, Best One</strong> – that's our promise to you.</p>
+                    <div class="about-stats">
+                        <div class="stat-box">
+                            <div class="num">100%</div>
+                            <div class="label">Fresh Daily</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="num">50+</div>
+                            <div class="label">Menu Items</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="num">24/7</div>
+                            <div class="label">Available</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-visual">
+                    <!--<svg width="160" height="160" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <text x="100" y="140" font-family="Bebas Neue, sans-serif" font-size="100" font-weight="bold" text-anchor="middle" fill="none" stroke="#F4A800" stroke-width="3">F</text>
+    </svg>-->
+                    <img src="logo.png" style="width:20%" />
+
+                    <div class="tagline-big">CRISPY</div>
+                    <div class="tagline-white">& FRESH</div>
+                    <div class="tagline-sub">EVERY ORDER</div>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- MENU -->
+<section id="menu">
+  <div class="container">
+    <h2 class="section-title">Our Menu</h2>
+    <div class="gold-line"></div>
+    <p class="menu-subtitle">All prices in EGP</p>
+
+    <div class="menu-tabs">
+      <button class="menu-tab active" onclick="showTab(this,'loaded')">Loaded Fries</button>
+      <button class="menu-tab" onclick="showTab(this,'flammy')">Flammy Pizza</button>
+      <button class="menu-tab" onclick="showTab(this,'noodles')">Noodles</button>
+      <button class="menu-tab" onclick="showTab(this,'sandwiches')">Sandwiches</button>
+      <button class="menu-tab" onclick="showTab(this,'drinks')">Drinks</button>
+    </div>
+
+    <!-- LOADED FRIES -->
+    <div id="tab-loaded" class="menu-section active">
+      <div class="category-title">Loaded Fries</div>
+      <div class="category-ar"> </div>
+      <div class="menu-grid">
+          <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 135)"><div class="item-info"><div class="item-name">Crispy Chicken Fries</div><div class="item-name-ar">بطاطس دجاج كرسبي مع سبايسي صوص</div><div class="item-desc">with Salsa Sauce</div></div><div><div class="price">135</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 140)"><div class="item-info"><div class="item-name">Curry Sausage Fries</div><div class="item-name-ar">فرايز سجق كاري مع صوص الكاري الحار</div><div class="item-desc">with Spicy Curry Sauce</div></div><div><div class="price">140</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 149)"><div class="item-info"><div class="item-name">Gyros-Style Fries</div><div class="item-name-ar">بطاطس جيروس ستايل مع صلصة تزاتزيكي</div><div class="item-desc">with Tzatziki Sauce</div></div><div><div class="price">149</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 149)"><div class="item-info"><div class="item-name">Schnitzel Fries</div><div class="item-name-ar">بطاطس شينتزل مع وايت صوص</div><div class="item-desc">with White Sauce</div></div><div><div class="price">149</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 149)"><div class="item-info"><div class="item-name">Shrimp Fries</div><div class="item-name-ar">بطاطس جمبري بالوايت صوص + صوص الثوم</div><div class="item-desc">with Garlic Sauce</div></div><div><div class="price">149</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 135)"><div class="item-info"><div class="item-name">Chicken Mesahab Fries</div><div class="item-name-ar">بطاطس بالدجاج المسحب مع الباربكيو</div><div class="item-desc">with BBQ Sauce</div></div><div><div class="price">135</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 140)"><div class="item-info"><div class="item-name">Crispy Fish Fillet Fries</div><div class="item-name-ar">بطاطس سمك فيليه مقرمش مع صوص الريمولاد</div><div class="item-desc">with Remoulade Sauce</div></div><div><div class="price">140</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 140)"><div class="item-info"><div class="item-name">Kofta Fries</div><div class="item-name-ar">بطاطس كفته مع صوص الطماطم</div><div class="item-desc">with Tomato Sauce</div></div><div><div class="price">140</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 35)"><div class="item-info"><div class="item-name">Lasty Classic</div><div class="item-name-ar">بطاطس فرش مقرمشة + كوكتيل صوص</div></div><div><div class="price">35</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 130)"><div class="item-info"><div class="item-name">Caesar Salad Fries</div><div class="item-name-ar">بطاطس سلطة سيزر + شرائح الدجاج المشوية</div></div><div><div class="price">130</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 110)"><div class="item-info"><div class="item-name">Mozzarella Sticks Fries</div><div class="item-name-ar">بطاطس أصابع موتزاريلا</div></div><div><div class="price">110</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 65)"><div class="item-info"><div class="item-name">Rosti Your Way</div><div class="item-name-ar">روستي على كيفك 5قطع</div></div><div><div class="price">65</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 149)"><div class="item-info"><div class="item-name">Bolognese Fries</div><div class="item-name-ar">بطاطس بولونيز لحمة مفرومة + صلصة الطماطم</div></div><div><div class="price">149</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 39)"><div class="item-info"><div class="item-name">Sweet Fries</div><div class="item-name-ar">بطاطا حلوة</div></div><div><div class="price">39</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 39)"><div class="item-info"><div class="item-name">Chili Cheese Fries</div><div class="item-name-ar">بطاطس تشيلي تشيز</div></div><div><div class="price">39</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 139)"><div class="item-info"><div class="item-name">Creamy Chicken Fries</div><div class="item-name-ar">بطاطس بالدجاج الكريمي</div></div><div><div class="price">139</div><div class="price-note">EGP</div></div></div>
+      </div>
+    </div>
+
+    <!-- FLAMMY -->
+    <div id="tab-flammy" class="menu-section">
+      <div class="special-block">
+        <div class="category-title">Flammy – German Pizza</div>
+        <div class="category-ar">بيتزا ألمانية مقرمشة بنكهات مميزة</div>
+        <div class="menu-grid">
+           <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 197)"><div class="item-info"><div class="item-name">Mixed Cheese</div><div class="item-name-ar">ميكس جبن</div></div><div><div class="price">179</div><div class="price-note">EGP</div></div></div>
+           <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 125)"><div class="item-info"><div class="item-name">Special Sweet</div><div class="item-name-ar">سبيشال سويت</div></div><div><div class="price">125</div><div class="price-note">EGP</div></div></div>
+           <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 199)"><div class="item-info"><div class="item-name">Tuna</div><div class="item-name-ar">تونة</div></div><div><div class="price">199</div><div class="price-note">EGP</div></div></div>
+           <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 235)"><div class="item-info"><div class="item-name">Shrimp</div><div class="item-name-ar">جمبري</div></div><div><div class="price">235</div><div class="price-note">EGP</div></div></div>
+           <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 215)"><div class="item-info"><div class="item-name">Chicken</div><div class="item-name-ar">دجاج</div></div><div><div class="price">215</div><div class="price-note">EGP</div></div></div>
+           <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 235)"><div class="item-info"><div class="item-name">Bolognese</div><div class="item-name-ar">بولونيز</div></div><div><div class="price">235</div><div class="price-note">EGP</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOODLES -->
+    <div id="tab-noodles" class="menu-section">
+      <div class="category-title">Noodles</div>
+      <div class="category-ar">نودلز</div>
+      <div class="menu-grid">
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 220)"><div class="item-info"><div class="item-name">Bolognese Noodles</div><div class="item-name-ar">نودلز بصلصة البولونيز (اللحمة المفرومة مع الريد صوص مع جبنة البارمزيان)</div></div><div><div class="price">220</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 230)"><div class="item-info"><div class="item-name">Shrimp Noodles</div><div class="item-name-ar">نودلز بالجمبري</div></div><div><div class="price">230</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 190)"><div class="item-info"><div class="item-name">Chicken Noodles</div><div class="item-name-ar">نودلز بالفراخ</div></div><div><div class="price">190</div><div class="price-note">EGP</div></div></div>
+      </div>
+    </div>
+
+    <!-- SANDWICHES -->
+    <div id="tab-sandwiches" class="menu-section">
+      <div class="category-title">Sandwiches</div>
+      <div class="category-ar">سندوتشات</div>
+      <div class="menu-grid">
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 249)"><div class="item-info"><div class="item-name">Classic Beef Burger</div><div class="item-name-ar">بيف برجر كلاسيك 250 جرام + لاستي كلاسيك</div></div><div><div class="price">249</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 229)"><div class="item-info"><div class="item-name">Schnitzel Burger</div><div class="item-name-ar">شينتزل برجر + لاستي كلاسيك</div></div><div><div class="price">229</div><div class="price-note">EGP</div></div></div>
+         <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 199)"><div class="item-info"><div class="item-name">Hot Dog</div><div class="item-name-ar">هوت دوج + لاستي كلاسيك</div></div><div><div class="price">199</div><div class="price-note">EGP</div></div></div>
+      </div>
+    </div>
+
+    <!-- DRINKS -->
+    <div id="tab-drinks" class="menu-section">
+        <div class="drinks-grid">
+
+            <div class="drink-category-header">Coffee</div>
+            <div class="menu-grid">
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 40)"><div class="item-info"><div class="item-name">Espresso</div></div><div><div class="price">S40/D55</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 105)"><div class="item-info"><div class="item-name">Spanish Latte</div></div><div><div class="price">105</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 95)"><div class="item-info"><div class="item-name">Cappuccino</div></div><div><div class="price">95</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 100)"><div class="item-info"><div class="item-name">Mocha</div></div><div><div class="price">100</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 75)"><div class="item-info"><div class="item-name">Cortado</div></div><div><div class="price">75</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 100)"><div class="item-info"><div class="item-name">Flat White</div></div><div><div class="price">100</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 100)"><div class="item-info"><div class="item-name">Macchiato</div></div><div><div class="price">100</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 75)"><div class="item-info"><div class="item-name">Americano</div></div><div><div class="price">75</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 60)"><div class="item-info"><div class="item-name">Ristretto</div></div><div><div class="price">60</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 50)"><div class="item-info"><div class="item-name">French Coffee</div></div><div><div class="price">50</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 40)"><div class="item-info"><div class="item-name">Turkish Coffee</div><div class="item-desc">Plain / Spiced</div></div><div><div class="price">40</div><div class="price-note">EGP</div></div></div>
+            </div>
+            <div class="drink-category-header">Iced Coffee</div>
+            <div class="menu-grid">
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 95)"><div class="item-info"><div class="item-name">Iced Latte</div></div><div><div class="price">95</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 100)"><div class="item-info"><div class="item-name">Iced Spanish Latte</div></div><div><div class="price">100</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 105)"><div class="item-info"><div class="item-name">Iced Mocha</div></div><div><div class="price">105</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 110)"><div class="item-info"><div class="item-name">Iced Caramel Macchiato</div></div><div><div class="price">110</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 95)"><div class="item-info"><div class="item-name">Iced Chocolate</div></div><div><div class="price">95</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 70)"><div class="item-info"><div class="item-name">Iced Americano</div></div><div><div class="price">70</div><div class="price-note">EGP</div ></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 115)"><div class="item-info"><div class="item-name">Mocha Frappe</div></div><div><div class="price">115</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 110)"><div class="item-info"><div class="item-name">Lotus Frappe</div></div><div><div class="price">110</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 115)"><div class="item-info"><div class="item-name">Peanut Butter Frappe</div></div><div><div class="price">115</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 135)"><div class="item-info"><div class="item-name">Triple Chocolate Mocha Frappe</div></div><div><div class="price">135</div><div class="price-note">EGP</div></div></div>
+            </div>
+
+            <div class="drink-category-header">Milkshake</div>
+            <div class="menu-grid">
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 110)"><div class="item-info"><div class="item-name">Vanilla</div></div><div><div class="price">110</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 110)"><div class="item-info"><div class="item-name">Chocolate</div></div><div><div class="price">110</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 110)"><div class="item-info"><div class="item-name">Strawberry</div></div><div><div class="price">110</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 110)"><div class="item-info"><div class="item-name">Mango</div></div><div><div class="price">110</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 110)"><div class="item-info"><div class="item-name">Blueberry</div></div><div><div class="price">110</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 105)"><div class="item-info"><div class="item-name">Lotus</div></div><div><div class="price">105</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 115)"><div class="item-info"><div class="item-name">Pistachio</div></div><div><div class="price">115</div><div class="price-note">EGP</div></div></div>
+            </div>
+
+            <div class="drink-category-header">Smoothies</div>
+            <div class="menu-grid">
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 85)"><div class="item-info"><div class="item-name">Blueberry</div></div><div><div class="price">85</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 185)"><div class="item-info"><div class="item-name">Passion Fruit</div></div><div><div class="price">185</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 85)"><div class="item-info"><div class="item-name">Raspberry</div></div><div><div class="price">85</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 85)"><div class="item-info"><div class="item-name">Peach</div></div><div><div class="price">85</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 85)"><div class="item-info"><div class="item-name">Pineapple</div></div><div><div class="price">85</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 85)"><div class="item-info"><div class="item-name">Mango</div></div><div><div class="price">85</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 85)"><div class="item-info"><div class="item-name">Kiwi</div></div><div><div class="price">85</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 100)"><div class="item-info"><div class="item-name">Kamanja</div></div><div><div class="price">100</div><div class="price-note">EGP</div></div></div>
+            </div>
+
+            <div class="drink-category-header">Boba</div>
+            <div class="menu-grid">
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 110)"><div class="item-info"><div class="item-name">Boba Tea</div></div><div><div class="price">110</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 115)"><div class="item-info"><div class="item-name">Strawberry Boba</div></div><div><div class="price">115</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 115)"><div class="item-info"><div class="item-name">Blueberry Boba</div></div><div><div class="price">115</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 120)"><div class="item-info"><div class="item-name">Matcha Boba</div></div><div><div class="price">120</div><div class="price-note">EGP</div></div></div>
+            </div>
+
+            <div class="drink-category-header">Matcha</div>
+            <div class="menu-grid">
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 115)"><div class="item-info"><div class="item-name">Matcha Shake</div></div><div><div class="price">115</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 120)"><div class="item-info"><div class="item-name">Matcha Coffee</div></div><div><div class="price">120</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 130)"><div class="item-info"><div class="item-name">Pistachio Matcha</div></div><div><div class="price">130</div><div class="price-note">EGP</div></div></div>
+            </div>
+
+            <div class="drink-category-header">Mocktails</div>
+            <div class="menu-grid">
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 60)"><div class="item-info"><div class="item-name">Classic Mojito</div></div><div><div class="price">60</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 75)"><div class="item-info"><div class="item-name">Blueberry Mojito</div></div><div><div class="price">75</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 55)"><div class="item-info"><div class="item-name">Cherry Cola</div></div><div><div class="price">55</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 65)"><div class="item-info"><div class="item-name">Electric</div></div><div><div class="price">65</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 80)"><div class="item-info"><div class="item-name">Summer Beverage</div></div><div><div class="price">80</div><div class="price-note">EGP</div></div></div>
+            </div>
+
+            <div class="drink-category-header">Soft Ice Cream</div>
+            <div class="menu-grid">
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 115)"><div class="item-info"><div class="item-name">Chocolate</div></div><div><div class="price">115</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 120)"><div class="item-info"><div class="item-name">Vanilla</div></div><div><div class="price">120</div><div class="price-note">EGP</div></div></div>
+                <div class="menu-card" onclick="toggleItem(this, 'Small Fries', 130)"><div class="item-info"><div class="item-name">Pistachio</div></div><div><div class="price">130</div><div class="price-note">EGP</div></div></div>
+            </div>
+
+        </div>
+           </div>
+
+  </div>
+</section>
+    <!-- CONTACT -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Find Us</h2>
+            <div class="gold-line"></div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <p>Follow us on social media for the latest updates, special offers, and exclusive deals. Order directly on WhatsApp — we're just a message away!</p>
+                    <div class="social-links">
+                        <a href="https://wa.me/201039929939" target="_blank" class="social-btn wa-btn">
+                            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" /></svg>
+                            WhatsApp
+                        </a>
+                        <a href="https://www.facebook.com/Lastfrieseg/" target="_blank" class="social-btn">
+                            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>
+                            Facebook
+                        </a>
+                        <a href="https://www.instagram.com/lastfries_eg/" target="_blank" class="social-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
+                            Instagram
+                        </a>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <h3>Get In Touch</h3>
+                    <div class="contact-row">
+                        <div class="contact-icon">📍</div>
+                        <div><strong>Location</strong>EL Mashaya In Front Of AL Gezira Club Gate1</div>
+                    </div>
+                    <div class="contact-row">
+                        <div class="contact-icon">💬</div>
+                        <div><strong>WhatsApp Order</strong><a href="https://wa.me/201039929939" target="_blank">+201039929939</a></div>
+                    </div>
+                    <div class="contact-row">
+                        <div class="contact-icon">📘</div>
+                        <div><strong>Facebook</strong><a href="https://www.facebook.com/Lastfrieseg/" target="_blank">@Lastfrieseg</a></div>
+                    </div>
+                    <div class="contact-row">
+                        <div class="contact-icon">📸</div>
+                        <div><strong>Instagram</strong><a href="https://www.instagram.com/lastfries_eg/" target="_blank">@lastfries_eg</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        © 2026 <span>Last Fries</span> · Last One, Best One · All Rights Reserved <br>
+        Created by: <a href="https://wa.me/201039929939">Mostafa Zaghlool</a> <!--📱 <a href="https://wa.me/201066721334">+201066721334</a>-->
+    </footer>
+
+    <!-- ORDER SUMMARY -->
+    <div class="order-summary hidden" id="orderSummary">
+        <div class="summary-content">
+            <div class="summary-items">
+                <p><span class="count">0</span> items selected</p>
+                <p id="orderList"></p>
+            </div>
+            <div class="summary-total">
+                <span>Total:</span>
+                <span class="amount" id="totalPrice">0</span>
+                <span class="currency">EGP</span>
+            </div>
+            <button class="btn-order-now" id="orderBtn" onclick="placeOrder()" disabled>Order Now</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedItems = [];
+
+        function toggleItem(element, name, price) {
+            const isSelected = element.classList.contains('selected');
+
+            if (isSelected) {
+                element.classList.remove('selected');
+                selectedItems = selectedItems.filter(item => item.name !== name);
+            } else {
+                element.classList.add('selected');
+                selectedItems.push({ name, price });
+            }
+
+            updateOrderSummary();
+        }
+
+        function updateOrderSummary() {
+            const count = selectedItems.length;
+            const total = selectedItems.reduce((sum, item) => sum + item.price, 0);
+
+            if (count === 0) {
+                document.getElementById('orderSummary').classList.add('hidden');
+                document.body.style.paddingBottom = '0';
+            } else {
+                document.getElementById('orderSummary').classList.remove('hidden');
+                document.body.style.paddingBottom = '180px';
+            }
+
+            // Update summary display
+            document.querySelector('.count').textContent = count;
+            document.getElementById('totalPrice').textContent = total;
+            document.getElementById('orderBtn').disabled = count === 0;
+
+            // Update order list
+            const orderList = selectedItems.map(item => `${item.name} (${item.price} EGP)`).join(', ');
+            document.getElementById('orderList').textContent = count > 0 ? orderList : '';
+        }
+
+        function placeOrder() {
+            if (selectedItems.length === 0) return;
+
+            // Prepare message
+            const itemsList = selectedItems.map(item => `• ${item.name} - ${item.price} EGP`).join('%0A');
+            const total = selectedItems.reduce((sum, item) => sum + item.price, 0);
+
+            const message = `🍟 *Last Fries Order* 🍟%0A%0A${itemsList}%0A%0A*Total: ${total} EGP*%0A%0APlease confirm my order!`;
+
+            // Send to WhatsApp
+            const whatsappUrl = `https://wa.me/201039929939?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+
+            // Clear selection
+            document.querySelectorAll('.menu-card.selected').forEach(card => card.classList.remove('selected'));
+            selectedItems = [];
+            updateOrderSummary();
+        }
+
+        function toggleMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const menu = document.getElementById('mobileMenu');
+
+            hamburger.classList.toggle('active');
+            menu.classList.toggle('open');
+        }
+
+        function closeMenu() {
+            document.getElementById('hamburger').classList.remove('active');
+            document.getElementById('mobileMenu').classList.remove('open');
+        }
+
+        function showTab(btn, tab) {
+            document.querySelectorAll(".menu-section").forEach(s => s.classList.remove("active"));
+            document.querySelectorAll(".menu-tab").forEach(b => b.classList.remove("active"));
+            document.getElementById("tab-" + tab).classList.add("active");
+            btn.classList.add("active");
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener("click", function (e) {
+            const menu = document.getElementById("mobileMenu");
+            const hamburger = document.getElementById("hamburger");
+
+            if (menu.classList.contains("open") && !menu.contains(e.target) && !hamburger.contains(e.target)) {
+                hamburger.classList.remove('active');
+                menu.classList.remove("open");
+            }
+        });
+    </script>
+</body>
+</html>
